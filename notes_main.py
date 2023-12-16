@@ -73,7 +73,7 @@ def add_tag():
         tag=field_tag.text()
         if not tag in notes[key]['теги']:
             notes[key]['теги'].append(tag)
-            list_tags.addItems(tag)
+            list_tags.addItem(tag)
             field_tag.clear()
         with open('notes_data.json','w',encoding='utf-8')as file:
             json.dump(notes,file,sort_keys=True,ensure_ascii=False)
@@ -84,7 +84,7 @@ def add_tag():
 def del_tag():
     if list_tags.selectedItems():
         key=list_notes.selectedItems()[0].text()
-        tag=field_tag.selectedItems()[0].text()
+        tag=list_tags.selectedItems()[0].text()
         notes[key]['теги'].remove(tag)
         list_tags.clear()
         list_tags.addItems(notes[key]['теги'])
@@ -96,18 +96,18 @@ def del_tag():
 def search_tag():
     print(baton_tag_search.text())
     tag=field_tag.text()
-    if baton_tag_search.text()=='Искать заиетки по тегу'and tag:
+    if baton_tag_search.text()=='Искать заметки по тегу'and tag:
         print(tag)
         notes_filtered={}
         for note in notes:
-            if note in notes[note]['теги']:
+            if tag in notes[note]['теги']:
                 notes_filtered[note]=notes[note]
         baton_tag_search.setText('Сбросить поиск')
         list_notes.clear()
         list_tags.clear()
         list_notes.addItems(notes_filtered)
         print(baton_tag_search.text())
-    elif baton_tag_search.text()=='сбросить поиск':
+    elif baton_tag_search.text()=='Сбросить поиск':
         field_tag.clear()
         list_notes.clear()
         list_tags.clear()
@@ -166,7 +166,7 @@ baton_tag_search.clicked.connect(search_tag)
 
 notes_win.show()
 
-with open('notes_data.json','r') as file:
+with open('notes_data.json','r',encoding='utf-8') as file:
     notes=json.load(file)
 list_notes.addItems(notes)
 app.exec_()
